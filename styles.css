@@ -5,6 +5,7 @@ body {
 .card {
   margin: 10px;
   padding: 10px;
+  /* CX: Change colour to color */
   background-color: grey;
   width: 50px;
   text-align: center;
@@ -25,5 +26,6 @@ body {
 }
 
 .red {
+  /* CX: Change colour to color */
   color: red;
 }

@@ -34,6 +34,7 @@ const makeDeck = () => {
   for (let suitIndex = 0; suitIndex < suits.length; suitIndex += 1) {
     // Store the current suit in a variable
     const currentSuit = suits[suitIndex];
+    // CX: Setting of suit symbol as well as card colors
     let suitSymbol = '';
     let colour = '';
 
@@ -63,6 +64,7 @@ const makeDeck = () => {
     for (let rankCounter = 1; rankCounter <= 13; rankCounter += 1) {
       // By default, the card name is the same as rankCounter
       let cardName = `${rankCounter}`;
+      // CX: Setting of display name
       let displayName = cardName;
 
       // If rank is 1, 11, 12, or 13, set cardName to the ace or face card's name
@@ -102,11 +104,13 @@ const makeDeck = () => {
 // Make a card in the DOM
 const createCard = (cardInfo) => {
   const suit = document.createElement('div');
+  // CX: Add color to the suit
   suit.classList.add('suit', cardInfo.colour);
   suit.innerText = cardInfo.suitSymbol;
 
   const name = document.createElement('div');
   name.classList.add(cardInfo.displayName, cardInfo.colour);
+  // CX: Replace 3 with the display name of the card
   name.innerText = cardInfo.displayName;
 
   const card = document.createElement('div');
@@ -155,7 +159,6 @@ const player1Click = () => {
   if (playersTurn === 1) {
     // Pop player 1's card metadata from the deck
     player1Card = deck.pop();
-    console.log('player 1 card popped:', player1Card);
 
     // Create card element from card metadata
     const cardElement = createCard(player1Card);
@@ -175,7 +178,6 @@ const player2Click = () => {
   if (playersTurn === 2) {
     // Pop player 2's card metadata from the deck
     const player2Card = deck.pop();
-    console.log('player 2 card popped:', player2Card);
 
     // Create card element from card metadata
     const cardElement = createCard(player2Card);
@@ -223,4 +225,5 @@ const initGame = () => {
   document.body.appendChild(gameInfo);
 };
 
+// CX: Run initGame() to start everything!
 initGame();
