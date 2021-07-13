@@ -122,17 +122,15 @@ const createCard = (cardInfo) => {
   return card;
 };
 
-// Create a helper function for output to abstract complexity
-// of DOM manipulation away from game logic
-const output = (message) => {
-  gameInfo.innerText = message;
-};
-
 /**
  * GLOBAL SETUP
  * Global variables that store game-wide data or DOM elements
  */
 const deck = shuffleCards(makeDeck());
+
+// represents whether the user has recently clicked and we are waiting for the delay to end,
+// and to prevent user accidentally setting multiple timeouts
+let canClick = true;
 
 // Add the cardContainer DOM element as a global variable.
 let cardContainer;
@@ -147,6 +145,11 @@ const player1Button = document.createElement('button');
 const player2Button = document.createElement('button');
 // Create game info div as global value
 const gameInfo = document.createElement('div');
+// Create a helper function for output to abstract complexity
+// of DOM manipulation away from game logic
+const output = (message) => {
+  gameInfo.innerText = message;
+};
 
 /**
  * PLAYER ACTION CALLBACKS
@@ -156,45 +159,54 @@ const gameInfo = document.createElement('div');
 // Event handler on player 1's button to draw card and switch
 // to player 2's turn
 const player1Click = () => {
-  if (playersTurn === 1) {
-    // Pop player 1's card metadata from the deck
-    player1Card = deck.pop();
+  if (playersTurn === 1 && canClick === true) {
+    canClick = false;
 
-    // Create card element from card metadata
-    const cardElement = createCard(player1Card);
-    // Empty cardContainer in case this is not the 1st round of gameplay
-    cardContainer.innerHTML = '';
-    // Append the card element to the card container
-    cardContainer.appendChild(cardElement);
+    setTimeout(() => {
+      // Pop player 1's card metadata from the deck
+      player1Card = deck.pop();
 
-    // Switch to player 2's turn
-    playersTurn = 2;
+      // Create card element from card metadata
+      const cardElement = createCard(player1Card);
+      // Empty cardContainer in case this is not the 1st round of gameplay
+      cardContainer.innerHTML = '';
+      // Append the card element to the card container
+      cardContainer.appendChild(cardElement);
+
+      // Switch to player 2's turn
+      playersTurn = 2;
+      canClick = true;
+    }, 2000);
   }
 };
 
 // Event handler on player 2's button to draw card and determine winner
 // Switch back to player 1's turn to repeat game
 const player2Click = () => {
-  if (playersTurn === 2) {
-    // Pop player 2's card metadata from the deck
-    const player2Card = deck.pop();
+  if (playersTurn === 2 && canClick === true) {
+    canClick = false;
+    setTimeout(() => {
+      // Pop player 2's card metadata from the deck
+      const player2Card = deck.pop();
 
-    // Create card element from card metadata
-    const cardElement = createCard(player2Card);
-    // Append card element to card container
-    cardContainer.appendChild(cardElement);
+      // Create card element from card metadata
+      const cardElement = createCard(player2Card);
+      // Append card element to card container
+      cardContainer.appendChild(cardElement);
 
-    // Switch to player 1's turn
-    playersTurn = 1;
+      // Switch to player 1's turn
+      playersTurn = 1;
+      canClick = true;
 
-    // Determine and output winner
-    if (player1Card.rank > player2Card.rank) {
-      output('player 1 wins');
-    } else if (player1Card.rank < player2Card.rank) {
-      output('player 2 wins');
-    } else {
-      output('tie');
-    }
+      // Determine and output winner
+      if (player1Card.rank > player2Card.rank) {
+        output('player 1 wins');
+      } else if (player1Card.rank < player2Card.rank) {
+        output('player 2 wins');
+      } else {
+        output('tie');
+      }
+    }, 2000);
   }
 };
 
