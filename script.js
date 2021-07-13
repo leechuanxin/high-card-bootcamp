@@ -126,7 +126,11 @@ const createCard = (cardInfo) => {
  * GLOBAL SETUP
  * Global variables that store game-wide data or DOM elements
  */
-const deck = shuffleCards(makeDeck());
+
+// Initialize unshuffled deck
+const unshuffledDeck = makeDeck();
+// Shuffled deck as a copy of unshuffled deck
+let deck = shuffleCards([...unshuffledDeck]);
 
 // represents whether the user has recently clicked and we are waiting for the delay to end,
 // and to prevent user accidentally setting multiple timeouts
@@ -163,6 +167,11 @@ const player1Click = () => {
     canClick = false;
 
     setTimeout(() => {
+      // create new deck and reshuffle if no cards left
+      if (deck.length === 0) {
+        deck = shuffleCards([...unshuffledDeck]);
+      }
+
       // Pop player 1's card metadata from the deck
       player1Card = deck.pop();
 
@@ -186,6 +195,11 @@ const player2Click = () => {
   if (playersTurn === 2 && canClick === true) {
     canClick = false;
     setTimeout(() => {
+      // create new deck and reshuffle if no cards left
+      if (deck.length === 0) {
+        deck = shuffleCards([...unshuffledDeck]);
+      }
+
       // Pop player 2's card metadata from the deck
       const player2Card = deck.pop();
 
